@@ -1,0 +1,65 @@
+services:
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress
+    restart: always
+    depends_on:
+      - mariadb
+      - redis
+    environment:
+      WORDPRESS_DB_HOST: mariadb:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wa03L50aVF35KuQJkxwPKyNDXNHRQ7WV
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_REDIS_HOST', 'redis');
+        define('WP_REDIS_PORT', 6379);
+        define('WP_MEMORY_LIMIT', '512M');
+        define('WP_MAX_MEMORY_LIMIT', '512M');
+    volumes:
+      - wordpress_data:/var/www/html
+      - ./php-custom.ini:/usr/local/etc/php/conf.d/custom.ini
+    networks:
+      - proxy
+      - wordpress_internal
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.wordpress.rule=Host(`kupnik.pl`) || Host(`www.kupnik.pl`)'
+      - 'traefik.http.routers.wordpress.entrypoints=websecure'
+      - 'traefik.http.routers.wordpress.tls.certresolver=letsencrypt'
+      - 'traefik.http.services.wordpress.loadbalancer.server.port=80'
+      - 'traefik.docker.network=proxy'
+
+  mariadb:
+    image: mariadb:11
+    container_name: wordpress_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: wa03L50aVF35KuQJkxwPKyNDXNHRQ7WV
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wa03L50aVF35KuQJkxwPKyNDXNHRQ7WV
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - wordpress_internal
+
+  redis:
+    image: redis:7-alpine
+    container_name: wordpress_redis
+    restart: always
+    volumes:
+      - redis_data:/data
+    networks:
+      - wordpress_internal
+
+volumes:
+  wordpress_data:
+  mariadb_data:
+  redis_data:
+
+networks:
+  proxy:
+    external: true
+  wordpress_internal:
+    driver: bridge

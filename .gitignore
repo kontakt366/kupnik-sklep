@@ -1,0 +1,24 @@
+# WordPress core - zarządzany przez Docker image
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/cache/
+wp-content/backup-*/
+
+# Wrażliwe dane
+wp-config.php
+.env
+*.sql
+
+# Wtyczki/motywy z licencją (nie wgrywamy do repo)
+wp-content/themes/porto/
+wp-content/plugins/js_composer/
+wp-content/plugins/revslider/
+wp-content/plugins/porto-functionality/
+
+# Logi pluginu Unimet
+wp-content/plugins/kupnik-unimet-sync/logs/*.log
+
+# System
+.DS_Store
+*.swp
+node_modules/

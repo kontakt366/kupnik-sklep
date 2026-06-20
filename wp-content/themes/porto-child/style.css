@@ -1,0 +1,12 @@
+/*
+Theme Name: Porto Child
+Theme URI: https://kupnik.pl
+Template: porto
+Version: 1.0.0
+Description: Kupnik.pl child theme for Porto
+*/
+
+:root {
+  --porto-primary: #FF6B35;
+  --porto-primary-hover: #e55a28;
+}

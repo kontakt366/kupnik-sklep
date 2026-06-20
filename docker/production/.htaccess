@@ -1,0 +1,23 @@
+# BEGIN WPSuperCache
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteCond %{REQUEST_METHOD} !POST
+RewriteCond %{QUERY_STRING} !.*=.*
+RewriteCond %{HTTP_COOKIE} !^.*(comment_author|wordpressuser|wp-postpass|wordpress_logged_in).*$
+RewriteCond %{DOCUMENT_ROOT}/wp-content/cache/supercache/kupnik.pl%{REQUEST_URI}index-https.html -f
+RewriteRule ^(.*) /wp-content/cache/supercache/kupnik.pl%{REQUEST_URI}index-https.html [L]
+</IfModule>
+# END WPSuperCache
+
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+# END WordPress

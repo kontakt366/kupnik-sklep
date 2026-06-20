@@ -1,0 +1,72 @@
+services:
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress_staging
+    restart: always
+    depends_on:
+      - mariadb
+      - redis
+    environment:
+      WORDPRESS_DB_HOST: mariadb:3306
+      WORDPRESS_DB_NAME: wordpress_staging
+      WORDPRESS_DB_USER: wordpress_staging
+      WORDPRESS_DB_PASSWORD: STAGING_DB_PASSWORD_REPLACE
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_REDIS_HOST', 'redis');
+        define('WP_REDIS_PORT', 6379);
+        define('WP_MEMORY_LIMIT', '512M');
+        define('WP_MAX_MEMORY_LIMIT', '512M');
+        define('WP_CACHE', true);
+        define('WPCACHEHOME', WP_CONTENT_DIR . '/plugins/wp-super-cache/');
+        define('DISABLE_WP_CRON', true);
+        define('FS_CHMOD_FILE', 0644);
+        define('FS_CHMOD_DIR', 0755);
+    volumes:
+      - wordpress_staging_data:/var/www/html
+      - ./php-custom.ini:/usr/local/etc/php/conf.d/custom.ini
+    networks:
+      - proxy
+      - staging_internal
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.wordpress-staging.rule=Host(`staging.kupnik.pl`)'
+      - 'traefik.http.routers.wordpress-staging.entrypoints=websecure'
+      - 'traefik.http.routers.wordpress-staging.tls.certresolver=letsencrypt'
+      - 'traefik.http.routers.wordpress-staging.middlewares=staging-auth'
+      - 'traefik.http.services.wordpress-staging.loadbalancer.server.port=80'
+      - 'traefik.docker.network=proxy'
+      - 'traefik.http.middlewares.staging-auth.basicauth.users=kupnik:HASHED_PASSWORD_REPLACE'
+
+  mariadb:
+    image: mariadb:11
+    container_name: wordpress_staging_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: STAGING_DB_PASSWORD_REPLACE
+      MYSQL_DATABASE: wordpress_staging
+      MYSQL_USER: wordpress_staging
+      MYSQL_PASSWORD: STAGING_DB_PASSWORD_REPLACE
+    volumes:
+      - mariadb_staging_data:/var/lib/mysql
+    networks:
+      - staging_internal
+
+  redis:
+    image: redis:7-alpine
+    container_name: wordpress_staging_redis
+    restart: always
+    volumes:
+      - redis_staging_data:/data
+    networks:
+      - staging_internal
+
+volumes:
+  wordpress_staging_data:
+  mariadb_staging_data:
+  redis_staging_data:
+
+networks:
+  proxy:
+    external: true
+  staging_internal:
+    driver: bridge

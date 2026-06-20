@@ -1,0 +1,58 @@
+name: Deploy → Staging
+
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Kopiuj pliki na serwer i do kontenera
+        uses: appleboy/ssh-action@v1
+        with:
+          host: 94.130.21.96
+          username: root
+          key: ${{ secrets.SSH_DEPLOY_KEY }}
+          script: |
+            set -e
+            mkdir -p /tmp/kupnik-deploy
+
+      - name: Wyślij pliki przez rsync
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: -avz --delete
+          path: wp-content/
+          remote_path: /tmp/kupnik-deploy/wp-content/
+          remote_host: 94.130.21.96
+          remote_user: root
+          remote_key: ${{ secrets.SSH_DEPLOY_KEY }}
+
+      - name: Wgraj do kontenera staging i flush cache
+        uses: appleboy/ssh-action@v1
+        with:
+          host: 94.130.21.96
+          username: root
+          key: ${{ secrets.SSH_DEPLOY_KEY }}
+          script: |
+            set -e
+            # Kopiuj porto-child do kontenera
+            docker cp /tmp/kupnik-deploy/wp-content/themes/porto-child/. \
+              wordpress_staging:/var/www/html/wp-content/themes/porto-child/
+
+            # Kopiuj plugin Unimet do kontenera
+            docker cp /tmp/kupnik-deploy/wp-content/plugins/kupnik-unimet-sync/. \
+              wordpress_staging:/var/www/html/wp-content/plugins/kupnik-unimet-sync/
+
+            # Uprawnienia
+            docker compose -f /opt/docker/wordpress-staging/docker-compose.yml exec -T wordpress \
+              chown -R www-data:www-data /var/www/html/wp-content/themes/porto-child \
+                                          /var/www/html/wp-content/plugins/kupnik-unimet-sync
+
+            # Flush cache
+            docker compose -f /opt/docker/wordpress-staging/docker-compose.yml exec -T wordpress \
+              bash -c "test -f /usr/local/bin/wp || curl -sO https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp; wp cache flush --allow-root"
+
+            echo "✓ Staging zaktualizowany"
