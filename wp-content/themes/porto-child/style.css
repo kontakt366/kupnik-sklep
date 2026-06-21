@@ -12,6 +12,37 @@ Description: Kupnik.pl child theme for Porto
 }
 
 /* =============================================
+   KUPNIK.PL — Header fixes
+   ============================================= */
+
+/* Usuń zbędny margin-top który rozjeżdża header na homepage */
+.vc_custom_1742765211036 {
+  margin-top: 0 !important;
+}
+
+/* Logo — ukryj obraz Porto, pokaż tekst KUPNIK */
+.site-logo img,
+.porto-logo-image,
+#header .site-logo img {
+  display: none !important;
+}
+
+.site-logo a::before {
+  content: 'KUPNIK';
+  font-family: 'Lato', sans-serif;
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: 0.06em;
+  color: #1a1a1a;
+  text-transform: uppercase;
+}
+
+/* Logo na ciemnym tle (hero homepage) — biały tekst */
+.home #header .site-logo a::before {
+  color: #ffffff;
+}
+
+/* =============================================
    KUPNIK.PL — Homepage visibility overrides
    ============================================= */
 
