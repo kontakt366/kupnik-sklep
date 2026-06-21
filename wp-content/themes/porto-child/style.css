@@ -28,10 +28,10 @@ h2.vc_custom_1741745283968 {
   display: none !important;
 }
 
-/* Ukryj przełącznik języka (EN/FR) z headera */
-.porto-header-language,
-.header-language-selector,
-.wpml-ls,
-.lang-sel {
+/* Ukryj przełącznik języka (EN/FR) i waluty z headera */
+.porto-view-switcher.custom-flag,
+ul#menu-currency-switcher,
+.currency-switcher.porto-view-switcher,
+#porto-flag-css {
   display: none !important;
 }
