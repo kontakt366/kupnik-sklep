@@ -10,4 +10,28 @@ Description: Kupnik.pl child theme for Porto
   --porto-primary: #FF6B35;
   --porto-primary-hover: #e55a28;
 }
-/* Test deploy Sat 20 Jun 2026 05:38:45 PM CEST */
+
+/* =============================================
+   KUPNIK.PL — Homepage visibility overrides
+   ============================================= */
+
+/* Ukryj testimonials (Voices of Craft Lovers) — zostaje Seasonal Selections */
+.porto-posts-grid-75121fa532f6c490d02770d2b728412e,
+.vc_custom_1741745283968,
+h2.vc_custom_1741745283968 {
+  display: none !important;
+}
+
+/* Ukryj sekcję "Personalize your items" — 4 produkty pod nią */
+.vc_custom_1741738825400,
+.vc_custom_1743350248358 {
+  display: none !important;
+}
+
+/* Ukryj przełącznik języka (EN/FR) z headera */
+.porto-header-language,
+.header-language-selector,
+.wpml-ls,
+.lang-sel {
+  display: none !important;
+}
