@@ -21,24 +21,24 @@ Description: Kupnik.pl child theme for Porto
 }
 
 /* Logo — ukryj obraz Porto, pokaż tekst KUPNIK */
-.site-logo img,
-.porto-logo-image,
-#header .site-logo img {
+#header .logo img.standard-logo,
+#header .logo img.retina-logo {
   display: none !important;
 }
 
-.site-logo a::before {
+#header .logo a::before {
   content: 'KUPNIK';
   font-family: 'Lato', sans-serif;
   font-weight: 900;
-  font-size: 22px;
-  letter-spacing: 0.06em;
+  font-size: 24px;
+  letter-spacing: 0.08em;
   color: #1a1a1a;
   text-transform: uppercase;
+  display: inline-block;
 }
 
-/* Logo na ciemnym tle (hero homepage) — biały tekst */
-.home #header .site-logo a::before {
+/* Logo na ciemnym tle (hero homepage) */
+.home #header .logo a::before {
   color: #ffffff;
 }
 
