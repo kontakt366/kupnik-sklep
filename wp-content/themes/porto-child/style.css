@@ -37,7 +37,7 @@ ul#menu-currency-switcher,
 .currency-switcher.porto-view-switcher { display: none !important; }
 
 /* =============================================
-   KUPNIK.PL — Menu — desktop
+   KUPNIK.PL — Menu główne desktop
    ============================================= */
 
 @media (min-width: 992px) {
@@ -45,37 +45,23 @@ ul#menu-currency-switcher,
   /* Bez podkreśleń */
   #header ul#menu-main-menu > li > a { text-decoration: none !important; }
 
-  /* KLUCZOWE: ul zostaje w jednym rzędzie — items się nie łamią */
-  #header ul#menu-main-menu {
-    white-space: nowrap !important;
-    flex-wrap: nowrap !important;
-    /* Padding robi miejsce na strzałki */
-    padding-left: 28px !important;
-    padding-right: 28px !important;
-  }
+  /* Flex-1 kolumna musi mieć min-width:0 żeby nie rozpychała layoutu */
+  #header .vc_column_container.flex-1 { min-width: 0; }
 
-  /* Każdy item nie łamie tekstu */
-  #header ul#menu-main-menu > li.menu-item {
-    white-space: nowrap;
-    display: inline-block; /* fallback jeśli Porto używa block */
-    vertical-align: middle;
-  }
-
-  /* Strzałki slidera */
+  /* Strzałki */
   .kupnik-nav-prev,
   .kupnik-nav-next {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     z-index: 200;
-    background: rgba(255,255,255,0.95);
+    background: rgba(255,255,255,0.9);
     border: 1px solid #ddd;
     border-radius: 50%;
     width: 22px; height: 22px;
     font-size: 16px;
     cursor: pointer;
-    padding: 0;
-    color: #555;
+    padding: 0; color: #555;
     transition: all 0.15s;
     display: flex;
     align-items: center;
@@ -86,66 +72,39 @@ ul#menu-currency-switcher,
   .kupnik-nav-prev { left: 2px; }
   .kupnik-nav-next { right: 2px; }
 
-  /* ===== PODMENU WIELOKOLUMNOWE ===== */
-
-  /* Dropdown — układ flex kolumnowy, auto-wrap do kolejnej kolumny */
+  /* Podmenu wygenerowane przez JS — styl sklepu */
   #header ul#menu-main-menu > li > .sub-menu {
-    display: flex !important;
-    flex-direction: column !important;
-    flex-wrap: wrap !important;
-    align-content: flex-start !important;
-    max-height: 252px !important;   /* 7 items × 36px — potem nowa kolumna */
-    width: auto !important;
-    min-width: 200px;
-    padding: 8px 0 !important;
     background: #fff !important;
-    border: 1px solid #ebebeb !important;
+    border: 1px solid #e8e8e8 !important;
     border-top: 3px solid #FF6B35 !important;
-    box-shadow: 0 6px 24px rgba(0,0,0,0.11) !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.10) !important;
     border-radius: 0 0 4px 4px;
-    overflow: visible !important;
   }
 
-  #header ul#menu-main-menu > li > .sub-menu > li {
-    flex: 0 0 auto;
-    width: 200px;       /* szerokość jednej kolumny */
-    box-sizing: border-box;
-  }
-
+  /* Styl linków w podmenu */
   #header ul#menu-main-menu .sub-menu li > a {
-    display: block;
-    padding: 7px 18px 7px 16px !important;
-    font-size: 13px !important;
+    display: block !important;
+    padding: 8px 16px !important;
+    font-size: 12.5px !important;
     color: #333 !important;
     text-decoration: none !important;
     white-space: nowrap;
-    transition: color 0.12s, background 0.12s;
+    transition: color 0.12s, background 0.12s, padding-left 0.12s;
     border-left: 2px solid transparent;
   }
   #header ul#menu-main-menu .sub-menu li > a:hover {
     color: #FF6B35 !important;
     background: #fafafa !important;
-    border-left-color: #FF6B35;
+    border-left-color: #FF6B35 !important;
+    padding-left: 20px !important;
   }
 
-  /* Separator wizualny między kolumnami */
-  #header ul#menu-main-menu > li > .sub-menu > li:nth-child(7n+1):not(:first-child) {
-    border-left: 1px solid #f0f0f0;
-  }
-
-  /* Podmenu poziomu 3 — standardowy dropdown w prawo */
+  /* Poziom 3 — podmenu w prawo */
   #header ul#menu-main-menu .sub-menu .sub-menu {
-    display: block !important;
-    flex-direction: unset !important;
-    flex-wrap: unset !important;
-    max-height: none !important;
-    width: 200px !important;
     top: -3px !important;
     left: 100% !important;
-    margin-top: 0 !important;
     border-top: 3px solid #FF6B35 !important;
   }
-
 }
 
 /* Strzałki ukryte na mobile */
@@ -154,13 +113,12 @@ ul#menu-currency-switcher,
 }
 
 /* =============================================
-   KUPNIK.PL — Homepage visibility
+   KUPNIK.PL — Homepage
    ============================================= */
 
 .porto-posts-grid-75121fa532f6c490d02770d2b728412e,
 .vc_custom_1741745283968,
 h2.vc_custom_1741745283968 { display: none !important; }
-
 .vc_custom_1741738825400,
 .vc_custom_1743350248358 { display: none !important; }
 
