@@ -43,6 +43,54 @@ Description: Kupnik.pl child theme for Porto
 }
 
 /* =============================================
+   KUPNIK.PL — Menu ikony kategorii (Font Awesome)
+   ============================================= */
+
+/* Ikony przed nazwami kategorii w głównym menu */
+#header #menu-main-menu > li > a::before {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  margin-right: 6px;
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+/* Elektronarzędzia */
+#header li.cat-item-35 > a::before,
+#header li[id*="elektronarzedzia"] > a::before { content: '\f7d9'; } /* tools */
+
+/* Elektryka */
+#header li.cat-item-215 > a::before,
+#header li[id*="elektryka"] > a::before { content: '\f0e7'; } /* bolt */
+
+/* Narzędzia budowlane */
+#header li.cat-item-193 > a::before,
+#header li[id*="narzedzia-budowlane"] > a::before { content: '\f6e3'; } /* hard-hat */
+
+/* Hydraulika */
+#header li.cat-item-147 > a::before,
+#header li[id*="hydraulika"] > a::before { content: '\f0d0'; } /* faucet/wrench */
+
+/* Chemia budowlana */
+#header li.cat-item-65 > a::before,
+#header li[id*="chemia"] > a::before { content: '\f0c3'; } /* flask */
+
+/* Narzędzia warsztatowe */
+#header li.cat-item-29 > a::before,
+#header li[id*="narzedzia-warsztatowe"] > a::before { content: '\f0ad'; } /* wrench */
+
+/* Ogród */
+#header li.cat-item-55 > a::before,
+#header li[id*="ogrod"] > a::before { content: '\f06c'; } /* leaf */
+
+/* Okucia i zamknięcia */
+#header li.cat-item-201 > a::before,
+#header li[id*="okucia"] > a::before { content: '\f084'; } /* key */
+
+/* Więcej kategorii */
+#header li:has(> a[href="#"]) > a::before { content: '\f0ca'; margin-right: 6px; } /* list */
+
+/* =============================================
    KUPNIK.PL — Homepage visibility overrides
    ============================================= */
 
