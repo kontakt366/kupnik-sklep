@@ -3,52 +3,54 @@ add_action( 'wp_enqueue_scripts', function() {
     wp_enqueue_style( 'porto-child-style', get_stylesheet_uri(), ['porto-style'] );
 });
 
-// Menu slider — strzałki lewo/prawo
+// Slider strzałki — TYLKO desktop (>=992px)
 add_action( 'wp_footer', function() { ?>
 <script>
 (function(){
+  // Tylko desktop
+  if (window.innerWidth < 992) return;
+
   document.addEventListener('DOMContentLoaded', function(){
     var nav = document.getElementById('menu-main-menu');
     if (!nav) return;
 
-    // Rodzic <ul> — tu wstawiamy strzałki
+    // Sprawdź czy menu faktycznie scrolluje (szerokość items > container)
+    if (nav.scrollWidth <= nav.clientWidth + 4) return;
+
     var parent = nav.parentNode;
-    // Musi mieć position:relative żeby strzałki działały
-    var parentStyle = window.getComputedStyle(parent);
-    if (parentStyle.position === 'static') {
-      parent.style.position = 'relative';
+    var parentPos = window.getComputedStyle(parent).position;
+    if (parentPos === 'static') parent.style.position = 'relative';
+
+    function makeBtn(cls, label, html) {
+      var b = document.createElement('button');
+      b.className = cls;
+      b.setAttribute('aria-label', label);
+      b.setAttribute('type', 'button');
+      b.innerHTML = html;
+      return b;
     }
 
-    var btnL = document.createElement('button');
-    var btnR = document.createElement('button');
-    btnL.className = 'kupnik-nav-prev';
-    btnR.className = 'kupnik-nav-next';
-    btnL.setAttribute('aria-label', 'Poprzednie kategorie');
-    btnR.setAttribute('aria-label', 'Następne kategorie');
-    btnL.innerHTML = '&#8249;';
-    btnR.innerHTML = '&#8250;';
+    var btnL = makeBtn('kupnik-nav-prev', 'Poprzednie', '&#8249;');
+    var btnR = makeBtn('kupnik-nav-next', 'Następne', '&#8250;');
     parent.appendChild(btnL);
     parent.appendChild(btnR);
 
-    var step = 220;
+    var step = 240;
+    btnL.addEventListener('click', function(e){ e.preventDefault(); nav.scrollBy({left:-step, behavior:'smooth'}); });
+    btnR.addEventListener('click', function(e){ e.preventDefault(); nav.scrollBy({left:step, behavior:'smooth'}); });
 
-    btnL.addEventListener('click', function(e){
-      e.preventDefault();
-      nav.scrollBy({ left: -step, behavior: 'smooth' });
-    });
-    btnR.addEventListener('click', function(e){
-      e.preventDefault();
-      nav.scrollBy({ left: step, behavior: 'smooth' });
-    });
-
-    function update(){
-      btnL.style.opacity = nav.scrollLeft > 4 ? '1' : '0.25';
-      var atEnd = nav.scrollLeft >= nav.scrollWidth - nav.clientWidth - 4;
-      btnR.style.opacity = atEnd ? '0.25' : '1';
+    function upd(){
+      btnL.style.opacity = nav.scrollLeft > 4 ? '1' : '0.3';
+      btnR.style.opacity = (nav.scrollLeft < nav.scrollWidth - nav.clientWidth - 4) ? '1' : '0.3';
     }
-    nav.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update);
-    update();
+    nav.addEventListener('scroll', upd, {passive:true});
+    upd();
+  });
+
+  window.addEventListener('resize', function(){
+    if (window.innerWidth < 992) {
+      document.querySelectorAll('.kupnik-nav-prev,.kupnik-nav-next').forEach(function(b){ b.style.display='none'; });
+    }
   });
 })();
 </script>

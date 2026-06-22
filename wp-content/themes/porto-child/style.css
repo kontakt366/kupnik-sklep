@@ -15,7 +15,7 @@ Description: Kupnik.pl child theme for Porto
    KUPNIK.PL — Header fixes
    ============================================= */
 
-/* Usuń zbędny margin-top który rozjeżdża header na homepage */
+/* Usuń zbędny margin-top który rozjeżdża header */
 .vc_custom_1742765211036 {
   margin-top: 0 !important;
 }
@@ -43,98 +43,107 @@ Description: Kupnik.pl child theme for Porto
 }
 
 /* =============================================
-   KUPNIK.PL — Menu slider
+   KUPNIK.PL — Menu slider (tylko desktop)
    ============================================= */
 
-/* Scroll tylko na <ul> — nie ruszamy wrapperów */
-#header ul#menu-main-menu {
-  overflow-x: auto;
-  overflow-y: visible;
-  white-space: nowrap;
-  scrollbar-width: none;
-  padding-left: 26px !important;
-  padding-right: 26px !important;
-}
-#header ul#menu-main-menu::-webkit-scrollbar { display: none; }
+@media (min-width: 992px) {
 
-/* Items zostają inline — nie zmieniamy display Porto */
-#header ul#menu-main-menu > li.menu-item {
-  white-space: nowrap;
+  /* Kolumna menu musi mieć min-width:0 żeby flex mógł się skurczyć */
+  #header .vc_column_container.flex-1 {
+    min-width: 0;
+    overflow: visible;
+  }
+
+  /* Menu jako flex z pojedynczym rzędem + scroll */
+  #header ul#menu-main-menu {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    overflow-y: visible;
+    min-width: 0;
+    scrollbar-width: none;
+    padding-left: 28px !important;
+    padding-right: 28px !important;
+    position: relative;
+  }
+  #header ul#menu-main-menu::-webkit-scrollbar { display: none; }
+
+  /* Items nie mają się zawijać */
+  #header ul#menu-main-menu > li.menu-item {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  /* Strzałki — widoczne tylko desktop */
+  .kupnik-nav-prev,
+  .kupnik-nav-next {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 200;
+    background: rgba(255,255,255,0.95);
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0;
+    color: #555;
+    transition: all 0.15s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+  }
+  .kupnik-nav-prev:hover,
+  .kupnik-nav-next:hover { border-color: #FF6B35; color: #FF6B35; }
+  .kupnik-nav-prev { left: 2px; }
+  .kupnik-nav-next { right: 2px; }
+
+  /* Podmenu (dropdown) — Porto pozycjonuje je absolutnie względem #header */
+  #header ul#menu-main-menu > li > ul.sub-menu {
+    z-index: 9999;
+  }
+
+  /* 3. poziom podmenu — upewnij się że jest widoczny */
+  #header ul#menu-main-menu .sub-menu .sub-menu {
+    display: none;
+    z-index: 9999;
+  }
+  #header ul#menu-main-menu .sub-menu li:hover > .sub-menu {
+    display: block !important;
+  }
+
 }
 
-/* Strzałki — pozycjonowane względem bezpośredniego rodzica ul */
-.kupnik-nav-prev,
-.kupnik-nav-next {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 200;
-  background: rgba(255,255,255,0.95);
-  border: 1px solid #e0e0e0;
-  border-radius: 50%;
-  width: 22px;
-  height: 22px;
-  line-height: 20px;
-  text-align: center;
-  font-size: 16px;
-  cursor: pointer;
-  padding: 0;
-  color: #555;
-  transition: all 0.15s;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+/* Strzałki ukryte na mobile */
+@media (max-width: 991px) {
+  .kupnik-nav-prev,
+  .kupnik-nav-next {
+    display: none !important;
+  }
 }
-.kupnik-nav-prev:hover,
-.kupnik-nav-next:hover { border-color: #FF6B35; color: #FF6B35; }
-.kupnik-nav-prev { left: 2px; }
-.kupnik-nav-next { right: 2px; }
 
 /* =============================================
-   KUPNIK.PL — Menu ikony kategorii (Font Awesome)
+   KUPNIK.PL — Mobile fixes
    ============================================= */
 
-/* Ikony przed nazwami kategorii w głównym menu */
-#header #menu-main-menu > li > a::before {
-  font-family: 'Font Awesome 5 Free';
-  font-weight: 900;
-  margin-right: 6px;
-  font-size: 13px;
-  vertical-align: middle;
+@media (max-width: 767px) {
+  /* Padding boczny — elementy nie powinny być przy krawędzi */
+  .container,
+  .porto-wrap-container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* Produkty i karty nie przylegają do krawędzi */
+  .products.columns-2,
+  .products.columns-3,
+  .products.columns-4 {
+    padding: 0 8px;
+  }
 }
-
-/* Elektronarzędzia */
-#header li.cat-item-35 > a::before,
-#header li[id*="elektronarzedzia"] > a::before { content: '\f7d9'; } /* tools */
-
-/* Elektryka */
-#header li.cat-item-215 > a::before,
-#header li[id*="elektryka"] > a::before { content: '\f0e7'; } /* bolt */
-
-/* Narzędzia budowlane */
-#header li.cat-item-193 > a::before,
-#header li[id*="narzedzia-budowlane"] > a::before { content: '\f6e3'; } /* hard-hat */
-
-/* Hydraulika */
-#header li.cat-item-147 > a::before,
-#header li[id*="hydraulika"] > a::before { content: '\f0d0'; } /* faucet/wrench */
-
-/* Chemia budowlana */
-#header li.cat-item-65 > a::before,
-#header li[id*="chemia"] > a::before { content: '\f0c3'; } /* flask */
-
-/* Narzędzia warsztatowe */
-#header li.cat-item-29 > a::before,
-#header li[id*="narzedzia-warsztatowe"] > a::before { content: '\f0ad'; } /* wrench */
-
-/* Ogród */
-#header li.cat-item-55 > a::before,
-#header li[id*="ogrod"] > a::before { content: '\f06c'; } /* leaf */
-
-/* Okucia i zamknięcia */
-#header li.cat-item-201 > a::before,
-#header li[id*="okucia"] > a::before { content: '\f084'; } /* key */
-
-/* Więcej kategorii */
-#header li:has(> a[href="#"]) > a::before { content: '\f0ca'; margin-right: 6px; } /* list */
 
 /* =============================================
    KUPNIK.PL — Homepage visibility overrides
