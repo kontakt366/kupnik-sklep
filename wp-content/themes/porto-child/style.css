@@ -12,7 +12,7 @@ Description: Kupnik.pl child theme for Porto
 }
 
 /* =============================================
-   KUPNIK.PL — Header fixes
+   KUPNIK.PL — Header
    ============================================= */
 
 /* Usuń margin-top który rozjeżdżał header */
@@ -50,37 +50,33 @@ ul#menu-currency-switcher,
    KUPNIK.PL — Menu główne
    ============================================= */
 
-/* Bez podkreśleń w głównych pozycjach menu */
+/* Bez podkreśleń */
 #header ul#menu-main-menu > li > a {
   text-decoration: none !important;
 }
-#header ul#menu-main-menu > li > a:hover {
-  text-decoration: none !important;
-}
 
-/* Strzałki slidera — tylko desktop */
+/* =============================================
+   KUPNIK.PL — Slider strzałki (tylko desktop)
+   ============================================= */
+
 @media (min-width: 992px) {
-  .kupnik-nav-wrap {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    overflow: hidden;
-  }
   .kupnik-nav-prev,
   .kupnik-nav-next {
-    flex-shrink: 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 200;
     background: rgba(255,255,255,0.92);
     border: 1px solid #ddd;
     border-radius: 50%;
     width: 22px;
     height: 22px;
     font-size: 16px;
+    line-height: 1;
     cursor: pointer;
     padding: 0;
     color: #555;
     transition: all 0.15s;
-    z-index: 10;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -90,45 +86,49 @@ ul#menu-currency-switcher,
     border-color: #FF6B35;
     color: #FF6B35;
   }
+  .kupnik-nav-prev { left: 0; }
+  .kupnik-nav-next { right: 0; }
 
-  /* Podmenu — ładny design sklepu */
+  /* Podmenu — styl sklepu */
   #header ul#menu-main-menu .sub-menu {
-    background: #fff;
-    border: 1px solid #ebebeb;
-    border-top: 2px solid #FF6B35;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    background: #fff !important;
+    border: 1px solid #ebebeb !important;
+    border-top: 2px solid #FF6B35 !important;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.10) !important;
     min-width: 220px;
     border-radius: 0 0 4px 4px;
-    padding: 8px 0;
+    padding: 8px 0 !important;
+    /* Nie ograniczamy wysokości — wszystkie pozycje widoczne */
+    max-height: none !important;
+    overflow: visible !important;
   }
   #header ul#menu-main-menu .sub-menu li a {
-    padding: 7px 18px;
-    font-size: 13px;
-    color: #333;
+    padding: 8px 20px !important;
+    font-size: 13px !important;
+    color: #333 !important;
     display: block;
     white-space: nowrap;
-    text-decoration: none;
-    transition: color 0.15s, background 0.15s;
+    text-decoration: none !important;
+    transition: color 0.12s, padding-left 0.12s;
   }
   #header ul#menu-main-menu .sub-menu li a:hover {
-    color: #FF6B35;
-    background: #fafafa;
+    color: #FF6B35 !important;
+    padding-left: 26px !important;
   }
-
-  /* Podmenu poziomu 3 */
+  /* Poziom 3 — wysuwa się w prawo */
   #header ul#menu-main-menu .sub-menu .sub-menu {
-    top: 0;
-    left: 100%;
-    margin-top: 0;
-    border-top: 2px solid #FF6B35;
+    top: -2px !important;
+    left: 100% !important;
+    margin-top: 0 !important;
   }
 }
 
-/* Na mobile — bez strzałek */
+/* Strzałki ukryte na mobile/tablet */
 @media (max-width: 991px) {
   .kupnik-nav-prev,
-  .kupnik-nav-next,
-  .kupnik-nav-wrap { display: none !important; }
+  .kupnik-nav-next {
+    display: none !important;
+  }
 }
 
 /* =============================================
@@ -146,7 +146,7 @@ h2.vc_custom_1741745283968 {
 }
 
 /* =============================================
-   KUPNIK.PL — Mobile fixes
+   KUPNIK.PL — Mobile
    ============================================= */
 
 @media (max-width: 767px) {
