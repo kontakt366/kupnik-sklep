@@ -3,22 +3,19 @@ add_action( 'wp_enqueue_scripts', function() {
     wp_enqueue_style( 'porto-child-style', get_stylesheet_uri(), ['porto-style'] );
 });
 
-// Tłumaczenie "My Account" → "Moje konto"
+// Tłumaczenia
 add_filter( 'gettext', function( $translated, $original ) {
     $map = [
-        'My Account'     => 'Moje konto',
-        'My account'     => 'Moje konto',
-        'Log In'         => 'Zaloguj się',
-        'Log Out'        => 'Wyloguj się',
-        'Register'       => 'Zarejestruj się',
+        'My Account'  => 'Konto',
+        'My account'  => 'Konto',
+        'Log In'      => 'Zaloguj się',
+        'Log Out'     => 'Wyloguj się',
+        'Register'    => 'Zarejestruj się',
     ];
     return $map[ $original ] ?? $translated;
 }, 20, 2 );
 
-/**
- * Slider menu — strzałki jako rodzeństwo <ul> bez żadnego wrappera
- * Tylko desktop >= 992px, nie dotykamy struktury Porto
- */
+// Slider — strzałki obok <ul>, bez żadnego wrappera
 add_action( 'wp_footer', function() { ?>
 <script>
 (function(){
@@ -33,42 +30,33 @@ add_action( 'wp_footer', function() { ?>
     });
     if (items.length <= 5) return;
 
-    // Rodzic <ul> — Porto's .wpb_wrapper.vc_column-inner
-    // Dodajemy strzałki jako rodzeństwo <ul>, nie opakowujemy go
     var parent = ul.parentNode;
     if (window.getComputedStyle(parent).position === 'static') {
       parent.style.position = 'relative';
     }
 
-    function makeBtn(cls, label, html) {
-      var b = document.createElement('button');
-      b.className = cls;
-      b.type = 'button';
-      b.setAttribute('aria-label', label);
-      b.innerHTML = html;
-      return b;
-    }
-
-    var btnL = makeBtn('kupnik-nav-prev', 'Poprzednie', '&#8249;');
-    var btnR = makeBtn('kupnik-nav-next', 'Następne', '&#8250;');
-
-    // Wstaw strzałki OBOK ul, nie wewnątrz nowego diva
+    // Wstawiamy strzałki jako rodzeństwo <ul>
+    var btnL = document.createElement('button');
+    var btnR = document.createElement('button');
+    btnL.type = btnR.type = 'button';
+    btnL.className = 'kupnik-nav-prev'; btnR.className = 'kupnik-nav-next';
+    btnL.setAttribute('aria-label','Poprzednie'); btnR.setAttribute('aria-label','Następne');
+    btnL.innerHTML = '&#8249;'; btnR.innerHTML = '&#8250;';
     parent.insertBefore(btnL, ul);
     parent.appendChild(btnR);
 
-    var PER_PAGE = 5, current = 0;
+    var PER = 5, cur = 0;
 
     function show() {
       items.forEach(function(li, i) {
-        li.style.display = (i >= current && i < current + PER_PAGE) ? '' : 'none';
+        li.style.display = (i >= cur && i < cur + PER) ? '' : 'none';
       });
-      btnL.style.opacity = current === 0 ? '0.3' : '1';
-      btnR.style.opacity = (current + PER_PAGE >= items.length) ? '0.3' : '1';
+      btnL.style.opacity = cur === 0 ? '0.3' : '1';
+      btnR.style.opacity = (cur + PER >= items.length) ? '0.3' : '1';
     }
 
-    btnL.addEventListener('click', function(){ if(current > 0){ current--; show(); } });
-    btnR.addEventListener('click', function(){ if(current + PER_PAGE < items.length){ current++; show(); } });
-
+    btnL.addEventListener('click', function(){ if(cur > 0){ cur--; show(); } });
+    btnR.addEventListener('click', function(){ if(cur + PER < items.length){ cur++; show(); } });
     show();
   });
 })();
