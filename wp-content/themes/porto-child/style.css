@@ -15,7 +15,7 @@ Description: Kupnik.pl child theme for Porto
    KUPNIK.PL — Header fixes
    ============================================= */
 
-/* Usuń zbędny margin-top który rozjeżdża header */
+/* Usuń margin-top który rozjeżdżał header */
 .vc_custom_1742765211036 {
   margin-top: 0 !important;
 }
@@ -25,7 +25,6 @@ Description: Kupnik.pl child theme for Porto
 #header .logo img.retina-logo {
   display: none !important;
 }
-
 #header .logo a::before {
   content: 'KUPNIK';
   font-family: 'Lato', sans-serif;
@@ -36,55 +35,42 @@ Description: Kupnik.pl child theme for Porto
   text-transform: uppercase;
   display: inline-block;
 }
-
-/* Logo na ciemnym tle (hero homepage) */
 .home #header .logo a::before {
   color: #ffffff;
 }
 
+/* Ukryj EN/FR i USD */
+.porto-view-switcher.custom-flag,
+ul#menu-currency-switcher,
+.currency-switcher.porto-view-switcher {
+  display: none !important;
+}
+
 /* =============================================
-   KUPNIK.PL — Menu slider (tylko desktop)
+   KUPNIK.PL — Menu główne
    ============================================= */
 
+/* Bez podkreśleń w głównych pozycjach menu */
+#header ul#menu-main-menu > li > a {
+  text-decoration: none !important;
+}
+#header ul#menu-main-menu > li > a:hover {
+  text-decoration: none !important;
+}
+
+/* Strzałki slidera — tylko desktop */
 @media (min-width: 992px) {
-
-  /* Kolumna menu musi mieć min-width:0 żeby flex mógł się skurczyć */
-  #header .vc_column_container.flex-1 {
-    min-width: 0;
-    overflow: visible;
-  }
-
-  /* Menu jako flex z pojedynczym rzędem + scroll */
-  #header ul#menu-main-menu {
-    display: flex !important;
-    flex-wrap: nowrap !important;
-    overflow-x: auto;
-    overflow-y: visible;
-    min-width: 0;
-    scrollbar-width: none;
-    padding-left: 28px !important;
-    padding-right: 28px !important;
+  .kupnik-nav-wrap {
     position: relative;
-  }
-  #header ul#menu-main-menu::-webkit-scrollbar { display: none; }
-
-  /* Items nie mają się zawijać */
-  #header ul#menu-main-menu > li.menu-item {
-    flex: 0 0 auto;
-    white-space: nowrap;
-  }
-
-  /* Strzałki — widoczne tylko desktop */
-  .kupnik-nav-prev,
-  .kupnik-nav-next {
     display: flex;
     align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 200;
-    background: rgba(255,255,255,0.95);
+    width: 100%;
+    overflow: hidden;
+  }
+  .kupnik-nav-prev,
+  .kupnik-nav-next {
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.92);
     border: 1px solid #ddd;
     border-radius: 50%;
     width: 22px;
@@ -94,35 +80,69 @@ Description: Kupnik.pl child theme for Porto
     padding: 0;
     color: #555;
     transition: all 0.15s;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .kupnik-nav-prev:hover,
-  .kupnik-nav-next:hover { border-color: #FF6B35; color: #FF6B35; }
-  .kupnik-nav-prev { left: 2px; }
-  .kupnik-nav-next { right: 2px; }
-
-  /* Podmenu (dropdown) — Porto pozycjonuje je absolutnie względem #header */
-  #header ul#menu-main-menu > li > ul.sub-menu {
-    z-index: 9999;
+  .kupnik-nav-next:hover {
+    border-color: #FF6B35;
+    color: #FF6B35;
   }
 
-  /* 3. poziom podmenu — upewnij się że jest widoczny */
+  /* Podmenu — ładny design sklepu */
+  #header ul#menu-main-menu .sub-menu {
+    background: #fff;
+    border: 1px solid #ebebeb;
+    border-top: 2px solid #FF6B35;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    min-width: 220px;
+    border-radius: 0 0 4px 4px;
+    padding: 8px 0;
+  }
+  #header ul#menu-main-menu .sub-menu li a {
+    padding: 7px 18px;
+    font-size: 13px;
+    color: #333;
+    display: block;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: color 0.15s, background 0.15s;
+  }
+  #header ul#menu-main-menu .sub-menu li a:hover {
+    color: #FF6B35;
+    background: #fafafa;
+  }
+
+  /* Podmenu poziomu 3 */
   #header ul#menu-main-menu .sub-menu .sub-menu {
-    display: none;
-    z-index: 9999;
+    top: 0;
+    left: 100%;
+    margin-top: 0;
+    border-top: 2px solid #FF6B35;
   }
-  #header ul#menu-main-menu .sub-menu li:hover > .sub-menu {
-    display: block !important;
-  }
-
 }
 
-/* Strzałki ukryte na mobile */
+/* Na mobile — bez strzałek */
 @media (max-width: 991px) {
   .kupnik-nav-prev,
-  .kupnik-nav-next {
-    display: none !important;
-  }
+  .kupnik-nav-next,
+  .kupnik-nav-wrap { display: none !important; }
+}
+
+/* =============================================
+   KUPNIK.PL — Homepage visibility overrides
+   ============================================= */
+
+.porto-posts-grid-75121fa532f6c490d02770d2b728412e,
+.vc_custom_1741745283968,
+h2.vc_custom_1741745283968 {
+  display: none !important;
+}
+.vc_custom_1741738825400,
+.vc_custom_1743350248358 {
+  display: none !important;
 }
 
 /* =============================================
@@ -130,42 +150,9 @@ Description: Kupnik.pl child theme for Porto
    ============================================= */
 
 @media (max-width: 767px) {
-  /* Padding boczny — elementy nie powinny być przy krawędzi */
   .container,
   .porto-wrap-container {
-    padding-left: 16px !important;
-    padding-right: 16px !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
   }
-
-  /* Produkty i karty nie przylegają do krawędzi */
-  .products.columns-2,
-  .products.columns-3,
-  .products.columns-4 {
-    padding: 0 8px;
-  }
-}
-
-/* =============================================
-   KUPNIK.PL — Homepage visibility overrides
-   ============================================= */
-
-/* Ukryj testimonials (Voices of Craft Lovers) — zostaje Seasonal Selections */
-.porto-posts-grid-75121fa532f6c490d02770d2b728412e,
-.vc_custom_1741745283968,
-h2.vc_custom_1741745283968 {
-  display: none !important;
-}
-
-/* Ukryj sekcję "Personalize your items" — 4 produkty pod nią */
-.vc_custom_1741738825400,
-.vc_custom_1743350248358 {
-  display: none !important;
-}
-
-/* Ukryj przełącznik języka (EN/FR) i waluty z headera */
-.porto-view-switcher.custom-flag,
-ul#menu-currency-switcher,
-.currency-switcher.porto-view-switcher,
-#porto-flag-css {
-  display: none !important;
 }
