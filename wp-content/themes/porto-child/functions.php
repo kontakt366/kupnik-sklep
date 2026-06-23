@@ -118,10 +118,18 @@ add_action( 'wp_footer', function() { ?>
       parent.appendChild(btnR);
 
       function show() {
+        /* Wymuś dokładną szerokość przez inline flex — wygrywa z każdym Porto CSS */
+        var itemW = Math.floor((ul.clientWidth - 56) / PER); // 56 = padding L+R
         items.forEach(function(li, i) {
-          li.style.display = (i >= cur && i < cur + PER) ? '' : 'none';
+          if (i >= cur && i < cur + PER) {
+            li.style.display = '';
+            li.style.flex    = '0 0 ' + itemW + 'px';
+          } else {
+            li.style.display = 'none';
+            li.style.flex    = '';
+          }
         });
-        btnL.style.opacity = cur === 0 ? '0.3' : '1';
+        btnL.style.opacity = (cur === 0)                 ? '0.3' : '1';
         btnR.style.opacity = (cur + PER >= items.length) ? '0.3' : '1';
       }
       btnL.addEventListener('click', function() { if (cur > 0)                 { cur--; show(); } });
