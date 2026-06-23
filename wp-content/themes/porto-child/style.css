@@ -42,11 +42,18 @@ ul#menu-currency-switcher,
 
 @media (min-width: 992px) {
 
-  /* Menu ul — nowrap + padding dla strzałek slidera (28px ≥ szerokość przycisku 22px + 2px offset) */
+  /* Menu ul — box-sizing:border-box żeby padding nie powiększał ul poza kolumnę */
   #header ul#menu-main-menu {
     flex-wrap: nowrap !important;
+    box-sizing: border-box !important;
     padding-left: 28px !important;
     padding-right: 28px !important;
+  }
+
+  /* li: równy podział przestrzeni, może się skurczyć, bez min-width z treści */
+  #header ul#menu-main-menu > li {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
   }
 
   /* <a> klipuje tekst — overflow na <a> nie blokuje dropdownu który wisi na <li> */
@@ -56,7 +63,6 @@ ul#menu-currency-switcher,
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
-    max-width: 100% !important;
   }
 
   /* Flex-1 kolumna musi mieć min-width:0 żeby nie rozpychała layoutu */
