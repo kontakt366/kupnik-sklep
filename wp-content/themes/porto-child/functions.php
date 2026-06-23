@@ -102,10 +102,15 @@ add_action( 'wp_footer', function() { ?>
     var PER = window.innerWidth >= 1200 ? 5 : 4, cur = 0;
 
     if (items.length > PER) {
-      var parent = ul.parentNode;
+      var parent = ul.parentNode; // .wpb_wrapper.vc_column-inner — kolumna flex, nie cały header
       if (window.getComputedStyle(parent).position === 'static') {
         parent.style.position = 'relative';
       }
+
+      /* parent.clientWidth = szerokość kolumny flex (ok. 800px), nie ula.
+         Porto robi ul.mega-menu absolutnym/pełnej szerokości, więc ul.clientWidth
+         zwraca ~1536px — dlatego używamy parent, nie ul. */
+      var itemW = Math.floor((parent.clientWidth - 56) / PER); // 56 = padding strzałek L+R
 
       var btnL = document.createElement('button');
       var btnR = document.createElement('button');
@@ -119,7 +124,13 @@ add_action( 'wp_footer', function() { ?>
 
       function show() {
         items.forEach(function(li, i) {
-          li.style.display = (i >= cur && i < cur + PER) ? '' : 'none';
+          if (i >= cur && i < cur + PER) {
+            li.style.display  = '';
+            li.style.maxWidth = itemW + 'px'; // cap — nie pozwól itemowi urosnąć szerzej niż slot
+          } else {
+            li.style.display  = 'none';
+            li.style.maxWidth = '';
+          }
         });
         btnL.style.opacity = (cur === 0)                 ? '0.3' : '1';
         btnR.style.opacity = (cur + PER >= items.length) ? '0.3' : '1';

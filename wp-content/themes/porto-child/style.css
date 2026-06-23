@@ -50,11 +50,8 @@ ul#menu-currency-switcher,
     padding-right: 28px !important;
   }
 
-  /* li: równy podział przestrzeni, może się skurczyć, bez min-width z treści */
-  #header ul#menu-main-menu > li {
-    flex: 1 1 0 !important;
-    min-width: 0 !important;
-  }
+  /* li: pozwól się skurczyć (maxWidth ustawia JS przez parent.clientWidth) */
+  #header ul#menu-main-menu > li { min-width: 0 !important; }
 
   /* <a> klipuje tekst — overflow na <a> nie blokuje dropdownu który wisi na <li> */
   #header ul#menu-main-menu > li > a {
