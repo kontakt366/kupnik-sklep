@@ -80,7 +80,7 @@ add_action( 'wp_footer', function() { ?>
 
       /* Buduj kolumny wewnątrz ul.sub-menu */
       var wrapper = document.createElement('div');
-      wrapper.style.cssText = 'display:flex;flex-direction:row;flex-wrap:nowrap;align-items:flex-start;';
+      wrapper.style.cssText = 'display:flex;flex-direction:row;flex-wrap:nowrap;align-items:flex-start;background:#fff;';
 
       for (var c = 0; c < cols; c++) {
         var colUl = document.createElement('ul');
@@ -99,7 +99,7 @@ add_action( 'wp_footer', function() { ?>
     var items = Array.from(ul.children).filter(function(li) {
       return li.classList.contains('menu-item');
     });
-    var PER = 5, cur = 0;
+    var PER = window.innerWidth >= 1200 ? 5 : 4, cur = 0;
 
     if (items.length > PER) {
       var parent = ul.parentNode;

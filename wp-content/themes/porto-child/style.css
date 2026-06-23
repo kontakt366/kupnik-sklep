@@ -82,8 +82,8 @@ ul#menu-currency-switcher,
   .kupnik-nav-prev { left: 2px; }
   .kupnik-nav-next { right: 2px; }
 
-  /* Podmenu wygenerowane przez JS — styl sklepu */
-  #header ul#menu-main-menu > li > .sub-menu {
+  /* Popup box Porto — tło, border, cień */
+  #header ul#menu-main-menu > li > .popup {
     background: #fff !important;
     border: 1px solid #e8e8e8 !important;
     border-top: 3px solid #FF6B35 !important;
