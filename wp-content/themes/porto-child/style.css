@@ -17,6 +17,7 @@ Description: Kupnik.pl child theme for Porto
 
 .vc_custom_1742765211036 { margin-top: 0 !important; }
 
+/* Logo — standardowy Porto header */
 #header .logo img.standard-logo,
 #header .logo img.retina-logo { display: none !important; }
 
@@ -31,6 +32,21 @@ Description: Kupnik.pl child theme for Porto
   display: inline-block;
 }
 .home #header .logo a::before { color: #ffffff; }
+
+/* Logo — Porto header builder (wpb_single_image zamiast .logo) */
+#header .wpb_single_image .vc_single_image-img { display: none !important; }
+#header .wpb_single_image a { text-decoration: none !important; }
+#header .wpb_single_image a::before {
+  content: 'KUPNIK';
+  font-family: 'Lato', sans-serif;
+  font-weight: 900;
+  font-size: 24px;
+  letter-spacing: 0.08em;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  display: inline-block;
+}
+.home #header .wpb_single_image a::before { color: #ffffff; }
 
 .porto-view-switcher.custom-flag,
 ul#menu-currency-switcher,
@@ -148,4 +164,40 @@ h2.vc_custom_1741745283968 { display: none !important; }
     padding-left: 15px !important;
     padding-right: 15px !important;
   }
+}
+
+/* =============================================
+   KUPNIK.PL — Mobile sidebar (side-nav-panel)
+   ============================================= */
+
+/* Usuń social icons z mobilnego menu */
+.share-links { display: none !important; }
+
+@media (max-width: 991px) {
+  /* Tło zgodne z obecnym Porto customizer (#1d1e20) */
+  #side-nav-panel { background-color: #1d1e20 !important; }
+
+  /* Biały tekst — czytelny na ciemnym tle */
+  #side-nav-panel,
+  #side-nav-panel a,
+  #side-nav-panel li,
+  #side-nav-panel .accordion-menu li > a,
+  #side-nav-panel .toggler { color: #e8e8e8 !important; }
+
+  #side-nav-panel a:hover,
+  #side-nav-panel .accordion-menu li.active > a { color: #FF6B35 !important; }
+
+  /* Separator między itemami */
+  #side-nav-panel .accordion-menu li { border-color: rgba(255,255,255,0.08) !important; }
+
+  /* Toggler (+) - wyraźny przycisk rozwijania */
+  #side-nav-panel .toggler {
+    border-color: rgba(255,255,255,0.2) !important;
+    background: transparent !important;
+  }
+  #side-nav-panel .toggler:hover { background: rgba(255,107,53,0.15) !important; color: #FF6B35 !important; }
+
+  /* Search w sidebarze */
+  #side-nav-panel .searchform input { background: rgba(255,255,255,0.08) !important; color: #e8e8e8 !important; border-color: rgba(255,255,255,0.15) !important; }
+  #side-nav-panel .searchform input::placeholder { color: rgba(255,255,255,0.4) !important; }
 }
