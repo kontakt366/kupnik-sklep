@@ -55,7 +55,7 @@ add_action( 'wp_footer', function() { ?>
       if (popup) {
         popup.style.setProperty('min-width', totalW + 'px', 'important');
       }
-      if (inner) { inner.style.width = totalW + 'px'; inner.style.padding = '0'; }
+      if (inner) { inner.style.padding = '0'; }
 
       /* Mouseenter: pozycjonowanie + re-aplikacja stylu przez rAF.
          Porto resetuje style popupa w swoim hover handlerze — rAF uruchamia się
