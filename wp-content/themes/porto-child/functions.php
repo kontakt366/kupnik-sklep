@@ -52,7 +52,14 @@ add_action( 'wp_footer', function() { ?>
       var popup = topLi.querySelector('.popup');
       var inner = topLi.querySelector('.popup .inner');
 
-      if (popup) popup.style.setProperty('min-width', totalW + 'px', 'important');
+      if (popup) {
+        popup.style.setProperty('min-width',     totalW + 'px',                 'important');
+        popup.style.setProperty('background',    '#fff',                        'important');
+        popup.style.setProperty('border',        '1px solid #e8e8e8',           'important');
+        popup.style.setProperty('border-top',    '3px solid #FF6B35',           'important');
+        popup.style.setProperty('box-shadow',    '0 8px 24px rgba(0,0,0,0.10)','important');
+        popup.style.setProperty('border-radius', '0 0 4px 4px',                'important');
+      }
       if (inner) { inner.style.width = totalW + 'px'; inner.style.padding = '0'; }
 
       /* Dynamiczny repositioning na mouseenter — li może być na str. 1 lub 2 slidera,
