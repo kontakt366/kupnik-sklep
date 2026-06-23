@@ -24,10 +24,12 @@ add_action( 'wp_footer', function() { ?>
     if (!ul) return;
 
     /* ---- 1. WIELOKOLUMNOWE PODMENU ----
-       Uruchamia się PRZED sliderem, żeby getBoundingClientRect() był wiarygodny.
-       Porto owija dropdown: li > div.popup > div.inner > ul.sub-menu */
-    var MAX_PER_COL = 7;
-    var COL_W = 200;
+       Uruchamia się PRZED sliderem — wszystkie li są widoczne, getBoundingClientRect OK.
+       Porto: li > div.popup > div.inner > ul.sub-menu */
+
+    var MIN_PER_COL = 7;   // min itemów w kolumnie (próg wejścia)
+    var MAX_COLS    = 5;   // maks kolumn → maks szerokość popupu = 5 × 200 = 1000px
+    var COL_W       = 200; // px szerokości kolumny
 
     Array.from(ul.children).forEach(function(topLi) {
       if (!topLi.classList.contains('menu-item')) return;
@@ -36,10 +38,13 @@ add_action( 'wp_footer', function() { ?>
       if (!sub || sub.dataset.kupnikCols) return;
 
       var lis = Array.from(sub.children);
-      if (lis.length <= MAX_PER_COL) return;
+      if (lis.length <= MIN_PER_COL) return;
 
       sub.dataset.kupnikCols = '1';
-      var cols   = Math.ceil(lis.length / MAX_PER_COL);
+
+      /* Oblicz liczbę kolumn i items/kolumna — nigdy więcej niż MAX_COLS kolumn */
+      var cols   = Math.min(MAX_COLS, Math.ceil(lis.length / MIN_PER_COL));
+      var perCol = Math.ceil(lis.length / cols);
       var totalW = cols * COL_W;
 
       topLi.classList.remove('narrow');
@@ -50,19 +55,25 @@ add_action( 'wp_footer', function() { ?>
       if (popup) popup.style.setProperty('min-width', totalW + 'px', 'important');
       if (inner) { inner.style.width = totalW + 'px'; inner.style.padding = '0'; }
 
-      /* Repositioning przy każdym hoverze — element może być na str. 1 lub 2 slidera,
-         więc jego pozycja X zmienia się; korekcja musi być dynamiczna */
+      /* Dynamiczny repositioning na mouseenter — li może być na str. 1 lub 2 slidera,
+         więc jego pozycja X zmienia się; liczymy w momencie hover.
+         Clampujemy popup do viewport z obu stron. */
       if (popup) {
         (function(tLi, pop, w) {
           tLi.addEventListener('mouseenter', function() {
-            var x = tLi.getBoundingClientRect().left;
-            if (x + w > window.innerWidth - 10) {
-              pop.style.setProperty('right', '0',    'important');
-              pop.style.setProperty('left',  'auto', 'important');
-            } else {
-              pop.style.setProperty('left',  '0',    'important');
-              pop.style.setProperty('right', 'auto', 'important');
+            var liLeft = tLi.getBoundingClientRect().left;
+            var vw     = window.innerWidth;
+            var leftPos = 0; // domyślnie: popup wyrównany do lewej krawędzi li
+
+            if (liLeft + w > vw - 10) {
+              leftPos = vw - 10 - w - liLeft; // przesuń w lewo o tyle ile wystaje za viewport
             }
+
+            /* Nie wychodź za lewą krawędź viewport (min 10px od lewej) */
+            leftPos = Math.max(leftPos, 10 - liLeft);
+
+            pop.style.setProperty('left',  leftPos + 'px', 'important');
+            pop.style.setProperty('right', 'auto',          'important');
           });
         })(topLi, popup, totalW);
       }
@@ -78,7 +89,7 @@ add_action( 'wp_footer', function() { ?>
           'flex:0 0 ' + COL_W + 'px',
           'border-right:' + (c < cols - 1 ? '1px solid #f0f0f0' : 'none')
         ].join(';');
-        lis.splice(0, MAX_PER_COL).forEach(function(li) { colUl.appendChild(li); });
+        lis.splice(0, perCol).forEach(function(li) { colUl.appendChild(li); });
         wrapper.appendChild(colUl);
       }
       sub.appendChild(wrapper);
@@ -113,7 +124,7 @@ add_action( 'wp_footer', function() { ?>
         btnL.style.opacity = cur === 0 ? '0.3' : '1';
         btnR.style.opacity = (cur + PER >= items.length) ? '0.3' : '1';
       }
-      btnL.addEventListener('click', function() { if (cur > 0)            { cur--; show(); } });
+      btnL.addEventListener('click', function() { if (cur > 0)                 { cur--; show(); } });
       btnR.addEventListener('click', function() { if (cur + PER < items.length) { cur++; show(); } });
       show();
     }
