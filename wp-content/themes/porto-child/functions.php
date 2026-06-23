@@ -21,7 +21,8 @@ add_action( 'wp_footer', function() { ?>
 (function(){
   if (window.innerWidth < 992) return;
 
-  document.addEventListener('DOMContentLoaded', function(){
+  // window.load — Porto inicjalizuje mega-menu w DOMContentLoaded, więc czekamy na load
+  window.addEventListener('load', function(){
     var ul = document.getElementById('menu-main-menu');
     if (!ul) return;
 
@@ -29,7 +30,7 @@ add_action( 'wp_footer', function() { ?>
     var items = Array.from(ul.children).filter(function(li){
       return li.classList.contains('menu-item');
     });
-    var PER = 4, cur = 0; // 4 naraz — długie polskie nazwy nie mieszczą się po 5
+    var PER = 5, cur = 0;
 
     if (items.length > PER) {
       var parent = ul.parentNode;
@@ -58,40 +59,38 @@ add_action( 'wp_footer', function() { ?>
     }
 
     /* ---- 2. WIELOKOLUMNOWE PODMENU ---- */
-    // JavaScript tworzy kolumny — niezawodne, Porto nie nadpisuje
+    // Wrapper div zamiast inline flex na .sub-menu — Porto nadpisuje display .sub-menu przez JS
     var MAX_PER_COL = 7;
 
     ul.querySelectorAll(':scope > li > ul.sub-menu').forEach(function(sub){
+      if (sub.dataset.kupnikCols) return;
       var lis = Array.from(sub.children);
       if (lis.length <= MAX_PER_COL) return;
 
+      sub.dataset.kupnikCols = '1';
       var cols = Math.ceil(lis.length / MAX_PER_COL);
 
-      // Wrapper flex dla kolumn
-      sub.style.cssText += [
-        'display:flex !important',
-        'flex-direction:row !important',
-        'flex-wrap:nowrap !important',
-        'align-items:flex-start !important',
-        'width:' + (cols * 210) + 'px !important',
-        'padding:0 !important'
+      var wrapper = document.createElement('div');
+      wrapper.style.cssText = [
+        'display:flex', 'flex-direction:row', 'flex-wrap:nowrap',
+        'align-items:flex-start', 'width:' + (cols * 210) + 'px'
       ].join(';');
 
-      // Przenieś <li> do osobnych divów-kolumn
       for (var c = 0; c < cols; c++) {
         var colUl = document.createElement('ul');
         colUl.style.cssText = [
           'list-style:none', 'margin:0', 'padding:8px 0',
           'min-width:210px', 'flex:0 0 210px',
-          'border-right:' + (c < cols-1 ? '1px solid #f0f0f0' : 'none')
+          'border-right:' + (c < cols - 1 ? '1px solid #f0f0f0' : 'none')
         ].join(';');
 
         var slice = lis.splice(0, MAX_PER_COL);
         slice.forEach(function(li){ colUl.appendChild(li); });
-        sub.appendChild(colUl);
+        wrapper.appendChild(colUl);
       }
-    });
 
+      sub.appendChild(wrapper);
+    });
   });
 })();
 </script>

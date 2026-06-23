@@ -45,6 +45,9 @@ ul#menu-currency-switcher,
   /* Bez podkreśleń */
   #header ul#menu-main-menu > li > a { text-decoration: none !important; }
 
+  /* Bez zawijania — slider ukrywa li przez display:none, Porto flex musi być nowrap */
+  #header ul#menu-main-menu { flex-wrap: nowrap !important; }
+
   /* Flex-1 kolumna musi mieć min-width:0 żeby nie rozpychała layoutu */
   #header .vc_column_container.flex-1 { min-width: 0; }
 
