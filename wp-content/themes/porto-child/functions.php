@@ -53,36 +53,36 @@ add_action( 'wp_footer', function() { ?>
       var inner = topLi.querySelector('.popup .inner');
 
       if (popup) {
-        popup.style.setProperty('min-width',     totalW + 'px',                 'important');
-        popup.style.setProperty('background',    '#fff',                        'important');
-        popup.style.setProperty('border',        '1px solid #e8e8e8',           'important');
-        popup.style.setProperty('border-top',    '3px solid #FF6B35',           'important');
-        popup.style.setProperty('box-shadow',    '0 8px 24px rgba(0,0,0,0.10)','important');
-        popup.style.setProperty('border-radius', '0 0 4px 4px',                'important');
+        popup.style.setProperty('min-width', totalW + 'px', 'important');
       }
       if (inner) { inner.style.width = totalW + 'px'; inner.style.padding = '0'; }
 
-      /* Dynamiczny repositioning na mouseenter — li może być na str. 1 lub 2 slidera,
-         więc jego pozycja X zmienia się; liczymy w momencie hover.
-         Clampujemy popup do viewport z obu stron. */
+      /* Mouseenter: pozycjonowanie + re-aplikacja stylu przez rAF.
+         Porto resetuje style popupa w swoim hover handlerze — rAF uruchamia się
+         po WSZYSTKICH synchronicznych handlerach zdarzenia, przed malowaniem. */
       if (popup) {
-        (function(tLi, pop, w) {
-          tLi.addEventListener('mouseenter', function() {
-            var liLeft = tLi.getBoundingClientRect().left;
-            var vw     = window.innerWidth;
-            var leftPos = 0; // domyślnie: popup wyrównany do lewej krawędzi li
+        (function(tLi, pop, inn, w) {
+          function applyPopupStyles() {
+            requestAnimationFrame(function() {
+              var liLeft  = tLi.getBoundingClientRect().left;
+              var vw      = window.innerWidth;
+              var leftPos = 0;
+              if (liLeft + w > vw - 10) { leftPos = vw - 10 - w - liLeft; }
+              leftPos = Math.max(leftPos, 10 - liLeft);
 
-            if (liLeft + w > vw - 10) {
-              leftPos = vw - 10 - w - liLeft; // przesuń w lewo o tyle ile wystaje za viewport
-            }
-
-            /* Nie wychodź za lewą krawędź viewport (min 10px od lewej) */
-            leftPos = Math.max(leftPos, 10 - liLeft);
-
-            pop.style.setProperty('left',  leftPos + 'px', 'important');
-            pop.style.setProperty('right', 'auto',          'important');
-          });
-        })(topLi, popup, totalW);
+              pop.style.setProperty('left',          leftPos + 'px',               'important');
+              pop.style.setProperty('right',         'auto',                       'important');
+              pop.style.setProperty('min-width',     w + 'px',                    'important');
+              pop.style.setProperty('background',    '#fff',                       'important');
+              pop.style.setProperty('border',        '1px solid #e8e8e8',         'important');
+              pop.style.setProperty('border-top',    '3px solid #FF6B35',         'important');
+              pop.style.setProperty('box-shadow',    '0 8px 24px rgba(0,0,0,.1)', 'important');
+              pop.style.setProperty('border-radius', '0 0 4px 4px',              'important');
+              if (inn) inn.style.setProperty('background', '#fff', 'important');
+            });
+          }
+          tLi.addEventListener('mouseenter', applyPopupStyles);
+        })(topLi, popup, inner, totalW);
       }
 
       /* Buduj kolumny wewnątrz ul.sub-menu */
