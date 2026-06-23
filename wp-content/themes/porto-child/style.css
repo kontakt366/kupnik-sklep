@@ -49,10 +49,16 @@ ul#menu-currency-switcher,
     padding-right: 28px !important;
   }
 
-  /* Bez podkreśleń, bez zawijania nazw */
+  /* li musi mieć min-width:0 żeby jako flex item mógł się skurczyć */
+  #header ul#menu-main-menu > li { min-width: 0; }
+
+  /* overflow na <a> (nie na <li>!) — klipuje tekst, nie blokuje dropdownu */
   #header ul#menu-main-menu > li > a {
+    display: block !important;
     text-decoration: none !important;
     white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
   }
 
   /* Flex-1 kolumna musi mieć min-width:0 żeby nie rozpychała layoutu */
