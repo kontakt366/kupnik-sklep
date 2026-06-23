@@ -146,6 +146,14 @@ ul#menu-currency-switcher,
 }
 
 /* =============================================
+   KUPNIK.PL — Sidebar filtrów (listingi produktów)
+   ============================================= */
+
+/* Ukryj widget "Category" (stos wszystkich kategorii sklepu) — zostają tylko
+   filtry atrybutów + cena. Scope .sidebar żeby nie ruszać innych miejsc. */
+.sidebar .widget_product_categories { display: none !important; }
+
+/* =============================================
    KUPNIK.PL — Wyszukiwarka (search input)
    ============================================= */
 

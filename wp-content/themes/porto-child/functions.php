@@ -14,6 +14,15 @@ add_filter( 'gettext', function( $translated, $original ) {
     return $map[ $original ] ?? $translated;
 }, 20, 2 );
 
+// Tłumaczenie tytułów widgetów sidebara (to zapisane tytuły instancji, nie gettext)
+add_filter( 'widget_title', function( $title ) {
+    $map = [
+        'Price'    => 'Cena',
+        'Category' => 'Kategoria',
+    ];
+    return $map[ $title ] ?? $title;
+} );
+
 add_action( 'wp_footer', function() { ?>
 <script>
 (function(){
