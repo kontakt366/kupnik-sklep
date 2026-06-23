@@ -146,6 +146,23 @@ ul#menu-currency-switcher,
 }
 
 /* =============================================
+   KUPNIK.PL — Wyszukiwarka (search input)
+   ============================================= */
+
+/* Tekst czarny w każdym polu wyszukiwarki — desktop i mobile */
+#header .searchform input,
+#header input[type="search"],
+#header input[type="text"],
+.searchform input[type="search"],
+.searchform input[type="text"],
+#side-nav-panel .searchform input,
+#side-nav-panel input[type="search"] {
+  color: #1a1a1a !important;
+}
+#header .searchform input::placeholder,
+#side-nav-panel .searchform input::placeholder { color: rgba(0,0,0,0.45) !important; }
+
+/* =============================================
    KUPNIK.PL — Homepage
    ============================================= */
 
