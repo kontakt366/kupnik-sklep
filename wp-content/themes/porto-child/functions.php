@@ -59,33 +59,41 @@ add_action( 'wp_footer', function() { ?>
     }
 
     /* ---- 2. WIELOKOLUMNOWE PODMENU ---- */
-    // Wrapper div zamiast inline flex na .sub-menu — Porto nadpisuje display .sub-menu przez JS
+    // Porto owija dropdown: li > div.popup > div.inner > ul.sub-menu (nie li > ul.sub-menu!)
     var MAX_PER_COL = 7;
+    var COL_W = 200;
 
-    ul.querySelectorAll(':scope > li > ul.sub-menu').forEach(function(sub){
-      if (sub.dataset.kupnikCols) return;
+    Array.from(ul.children).forEach(function(topLi){
+      var sub = topLi.querySelector('.popup .inner ul.sub-menu');
+      if (!sub || sub.dataset.kupnikCols) return;
+
       var lis = Array.from(sub.children);
       if (lis.length <= MAX_PER_COL) return;
 
       sub.dataset.kupnikCols = '1';
       var cols = Math.ceil(lis.length / MAX_PER_COL);
+      var totalW = cols * COL_W;
+
+      // Usuń narrow — Porto ogranicza szerokość popup przez tę klasę
+      topLi.classList.remove('narrow');
+
+      var popup = topLi.querySelector('.popup');
+      var inner = topLi.querySelector('.popup .inner');
+      if (popup) popup.style.setProperty('min-width', totalW + 'px', 'important');
+      if (inner) { inner.style.width = totalW + 'px'; inner.style.padding = '0'; }
 
       var wrapper = document.createElement('div');
-      wrapper.style.cssText = [
-        'display:flex', 'flex-direction:row', 'flex-wrap:nowrap',
-        'align-items:flex-start', 'width:' + (cols * 210) + 'px'
-      ].join(';');
+      wrapper.style.cssText = 'display:flex;flex-direction:row;flex-wrap:nowrap;align-items:flex-start;';
 
       for (var c = 0; c < cols; c++) {
         var colUl = document.createElement('ul');
         colUl.style.cssText = [
           'list-style:none', 'margin:0', 'padding:8px 0',
-          'min-width:210px', 'flex:0 0 210px',
+          'flex:0 0 ' + COL_W + 'px',
           'border-right:' + (c < cols - 1 ? '1px solid #f0f0f0' : 'none')
         ].join(';');
 
-        var slice = lis.splice(0, MAX_PER_COL);
-        slice.forEach(function(li){ colUl.appendChild(li); });
+        lis.splice(0, MAX_PER_COL).forEach(function(li){ colUl.appendChild(li); });
         wrapper.appendChild(colUl);
       }
 

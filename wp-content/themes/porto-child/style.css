@@ -42,8 +42,11 @@ ul#menu-currency-switcher,
 
 @media (min-width: 992px) {
 
-  /* Bez podkreśleń */
-  #header ul#menu-main-menu > li > a { text-decoration: none !important; }
+  /* Bez podkreśleń i bez zawijania nazw */
+  #header ul#menu-main-menu > li > a {
+    text-decoration: none !important;
+    white-space: nowrap !important;
+  }
 
   /* Bez zawijania — slider ukrywa li przez display:none, Porto flex musi być nowrap */
   #header ul#menu-main-menu { flex-wrap: nowrap !important; }
