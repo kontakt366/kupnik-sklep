@@ -164,13 +164,16 @@ ul#menu-currency-switcher,
 
 /* =============================================
    KUPNIK.PL — Homepage
+   UWAGA: scope .home obowiązkowy! Porto generuje tę samą klasę
+   (porto-posts-grid-...) dla testimoniali homepage I dla gridu produktów
+   na archiwum. Bez .home display:none ukrywał WSZYSTKIE produkty na listingach.
    ============================================= */
 
-.porto-posts-grid-75121fa532f6c490d02770d2b728412e,
-.vc_custom_1741745283968,
-h2.vc_custom_1741745283968 { display: none !important; }
-.vc_custom_1741738825400,
-.vc_custom_1743350248358 { display: none !important; }
+.home .porto-posts-grid-75121fa532f6c490d02770d2b728412e,
+.home .vc_custom_1741745283968,
+.home h2.vc_custom_1741745283968 { display: none !important; }
+.home .vc_custom_1741738825400,
+.home .vc_custom_1743350248358 { display: none !important; }
 
 /* =============================================
    KUPNIK.PL — Mobile
